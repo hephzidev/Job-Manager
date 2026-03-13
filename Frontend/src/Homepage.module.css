@@ -1,0 +1,89 @@
+.mainContainer{
+    height: 100vh;
+    width: 100%;
+   font-family: sans-serif;
+   font-weight: 700;
+    
+}
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 25px;
+    box-shadow: 0px 6px 10px rgba(2, 2, 2, 0.1);
+    margin: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.navLinks{
+    display: flex;
+    gap: 30px;
+}
+.navButtons{
+    display: flex;
+    gap: 20px;
+}
+.startBtn{
+ background-color: rgb(96, 96, 145);
+ border: none;
+ border-radius: 25px;
+ padding: 20px;
+ color: white;
+}
+.heroSection{
+  text-align:center;
+  margin-top:80px;
+}
+.mainHeading{
+    font-size: 50px;
+}
+.heroButtons{
+    display:flex ;
+    justify-content: center;
+    gap: 20px;
+
+}
+.getStartedBtn{
+    padding: 15px;
+    border-radius: 25px;
+    background-color: rgb(84, 84, 148);
+    color: white;
+    border: none;
+    
+}
+.chromeBtn{
+    padding: 15px;
+    border-radius: 25px;
+    border: none;
+    background-color: rgb(231, 231, 243);
+}
+.subHeading{
+    margin: 30px;
+}
+.heroButtons{
+    margin: 40px;
+    margin-bottom: 40px;
+}
+.parasection{
+    display: flex;
+    justify-content: center;
+}
+.paraName{
+    font-weight: 700;
+}
+.paraexplanation{
+    color: rgb(141, 133, 133);
+    font-weight: lighter;
+}
+.parapoints{
+     font-weight: lighter;
+}
+.right{
+    color: darkgreen
+}
+a{
+    text-decoration: none;
+}
+.loginBtn{
+    margin-top: 12px;
+}

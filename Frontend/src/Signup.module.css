@@ -1,0 +1,39 @@
+.signupcontainer{
+  display:flex;
+  height:100vh;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+.signupright{
+  width:50%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:60px;
+}
+
+.signupright h1{
+  margin-bottom:30px;
+}
+.signupright input{
+  border:none;
+  border-bottom:1px solid #ccc;
+  padding:10px;
+  margin-bottom:25px;
+  font-size:16px;
+  outline:none;
+}
+.signupright button{
+  background:linear-gradient(90deg,#ae73c5,#9b5cff);
+  border:none;
+  color:white;
+  padding:12px;
+  border-radius:25px;
+  font-size:16px;
+  cursor:pointer;
+}
+.signin{
+  margin-top:20px;
+  color:#555;
+  cursor:pointer;
+}
