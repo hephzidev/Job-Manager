@@ -5,23 +5,27 @@ let userSchema=require("./UserSchema")
 const addJob=async(req,res)=>{
     let a=req.body.companyName;
     let b=req.body.position;
-    let c=req.body.column;
+    let c=req.body.status;
     let d=req.body.salary;
     let e=req.body.jobtype;
-    let f=req.body.location;
-    let g=req.body.appliedOn;
-    let h=req.body.deadline;
+    let f=req.body.jobURL;
+    let g=req.body.location;
+    let h=req.body.appliedOn;
+    let i=req.body.deadline;
+    let j=req.body.description
 
 try {
     const newJob=new jobschema({
         companyName:a,
         position:b,
-        column:c,
+        status:c,
         salary:d,
         jobtype:e,
-        location:f,
-        appliedOn:g,
-        deadline:h
+        jobURL:f,
+        location:g,
+        appliedOn:h,
+        deadline:i,
+        description:j
     })
     await newJob.save()
     res.status(201).json({
@@ -41,14 +45,16 @@ const updateJob=async(req,res)=>{
     try {
     let companyName=req.body.companyName;
     let position= req.body.position;
-    let column= req.body.column;
+    let status= req.body.status;
     let salary= req.body.salary;
     let jobtype= req.body.jobtype;
+     let jobURL=req.body.jobURL;
     let location= req.body.location;
     let appliedOn =req.body.appliedOn;
-    let deadline=req.body.deadline
-    let updatedjob=await jobschema.findByIdAndUpdate(req.params.id,{companyName,position,
-                   column,salary,jobtype,location,appliedOn,deadline},{new:true})
+    let deadline=req.body.deadline;
+    let description= req.body.description
+    let updatedjob=await jobschema.findByIdAndUpdate(req.params.id,{companyName,position,status,
+                   salary,jobtype,jobURL,location,appliedOn,deadline,description},{new:true})
      res.json({
             message:"job updated successfully",
             data:updatedjob
@@ -109,54 +115,78 @@ const deleteJob=async(req,res)=>{
 }
 
 const creteAccount=async(req,res)=>{
+     const { userName, userEmail, userPassword } = req.body;
     try {
-        let a=req.body.userName;
-         let b=req.body.userEmail;
-        let c=req.body.userPassword
+       if (!userName || !userEmail || !userPassword) {
+      return res.status(400) .json({ message: "All fields are required" });
+    }
        
+    const existingUser = await User.findOne({ userEmail });
+    if (existingUser) {
+      return res.status(409).json({ message: "Email already registered" });
+    }
         const newUser=new userSchema({
-            userName:a,
-            userEmail:b,
-            userPassword:c
+            userName,
+            userEmail,
+            userPassword,
         })
         await newUser.save()
-        res.status(201).json({
-            message:"signup successfully"
+        return res.status(201).json({
+            message:"Signup successful! You can now login",
+              data: {
+        id: newUser._id,
+        userName: newUser.userName,
+        userEmail: newUser.userEmail,
+      }
         })
     } catch (error) {
+        console.error("Signup error:", error);
         res.status(500).json({
-            message:"Error in signup",
-            Error:error
+            message: "Internal server error",
+            Error: error.message,
+            Error:error,  
         })
     }
 }
 
 const loginAccount=async(req,res)=>{
-    let a=req.body.userEmail;
-    let b=req.body.userPassword
+    const{userEmail,userPassword}=req.body
     try {
+        if (!userEmail || !userPassword) {
+        return res.status(400).json({
+        message: "Email and password are required"
+      });
+      }
         const user=await userSchema.findOne({
-            userEmail:a
+            userEmail
         })
         if(!user){
-            res.status(401).json({
+            return res.status(401).json({
                 message:"Invalid email"
             })
         }
-        if(user.userPassword!==b){
-            res.status(401).json({
+        if(user.userPassword!==userPassword){
+            return res.status(401).json({
                 message:"Invalid password"
-            })
+            }) 
         }
-        res.json({
+        return res.status(200).json({
             message:"Login successfull",
             data:user
         })
     } catch (error) {
-        res.json({
-            message:"Error in login",
-            Error:error
-        })
+        if(error.response){
+             setPopup({
+      message: error.response.data.message,
+      type: "error"
+    })
+        }
+        else{
+            setPopup({
+      message: "Login Failed",
+      type: "error"
+    })
+        }
     }
 }
 

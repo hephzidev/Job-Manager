@@ -1,0 +1,223 @@
+.overlay{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    background: rgba(0,0,0,0.4);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.modalBox{
+    width:800px;
+    background:white;
+    padding:35px;
+    border-radius:10px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modalHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.modalHeader h2{
+    font-weight:600;
+}
+
+.close{
+    font-size:20px;
+    cursor:pointer;
+}
+
+.formGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.inputGroup{
+    display:flex;
+    flex-direction:column;
+}
+
+.inputGroup label{
+    font-size:13px;
+    margin-bottom:5px;
+    color:#777;
+}
+
+.inputGroup input,
+.inputGroup select{
+    border:none;
+    border-bottom:1px solid #ccc;
+    padding:8px;
+    outline:none;
+}
+
+.buttons{
+    display:flex;
+    justify-content:flex-end;
+    gap:15px;
+    margin-top:30px;
+}
+
+.reset{
+    background:#eee;
+    border:none;
+    padding:8px 18px;
+    border-radius:5px;
+}
+
+.save{
+    background:#3b82f6;
+    color:white;
+    border:none;
+    padding:8px 18px;
+    border-radius:5px;
+}
+
+
+/* //------------ */
+.header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:15px 25px;
+background:#f5f6fa;
+border-bottom:1px solid #ddd;
+}
+
+.search{
+width:350px;
+padding:8px 12px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.headerbuttons button{
+margin-left:10px;
+padding:8px 14px;
+border:none;
+border-radius:6px;
+background:#6c63ff;
+color:white;
+cursor:pointer;
+}
+.close{
+    text-decoration: none;
+    color: black;
+}
+
+
+
+/* ////////// */ 
+
+.board{
+display:flex;
+gap:20px;
+padding:20px;
+}
+
+.column{
+width:350px;
+background:#eef1f5;
+border-radius:20px;
+padding:10px;
+height:800px;
+}
+.columnpara{
+    background-color: #352d9c;
+    border-radius: 10px;
+    height: 30px;
+    padding-left: 10px;
+    font-weight: bold;
+    color: azure;
+}
+
+/* //popup------------- */
+.popupoverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:1000;
+}
+
+.popup{
+background:white;
+padding:20px;
+border-radius:10px;
+width:700px;
+max-height:90vh;
+overflow:auto;
+}
+.jobcolumn{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.jobcard{
+background:white;
+padding:10px;
+border-radius:6px;
+box-shadow:0 12px 5px rgba(19, 19, 19, 0.1);
+margin-top: 10px;
+}
+.jobcard h5{
+  margin: 0;
+  font-size: 16px;
+}
+
+.jobcard p{
+  margin: 2px 0;
+  font-size: 14px;
+}
+.viewbtn{
+    display: flex;
+    justify-content: end;
+    gap: 8px;
+}
+.buttongroups{
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}
+.editbtn{
+    border-radius: 4px;
+      background-color: #28a745;
+    border: none;
+}
+.deletebtn{
+    border-radius: 4px;
+    border: none;
+    background-color:  #b82937;
+}
+.box1{
+    background-color: rgb(52, 136, 136);
+}
+.box2{
+    background-color: #28a745;
+}
+.box3{
+    background-color: rgb(154, 65, 172);
+}
+.box5{
+    background-color: red;
+}
+.descriptionBox{
+    margin-top: 20px;
+    outline: none;
+}
+textarea{
+    margin-top: 20px;
+}

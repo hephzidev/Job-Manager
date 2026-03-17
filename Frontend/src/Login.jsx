@@ -8,6 +8,11 @@ const Login = () => {
              userEmail:"",
              userPassword:""
     })
+    const[popup,setPopup]=useState({
+      show: false,
+      message:"",
+      type:""
+    })
     const navigate=useNavigate()
     console.log(details);
     
@@ -16,24 +21,33 @@ const Login = () => {
      }
     async function updateDetails(){
              if(!details.userEmail || !details.userPassword){
-             alert("Please enter email and password")
-             return
+             setPopup({
+              show: true,
+              message:"Please enter email and password",
+              type:"error"
+             })
+             return;
              }
           try {
             let response=await axios.post("http://localhost:3000/signin",details)
               if(response.status === 200){
-               alert(response.data.message)
-               navigate("/web")
+               setPopup({
+                message:response.data.message || "Login successful",
+                type:"success"
+               })
+                setTimeout(() => {
+               navigate("/board");
+               }, 1200);
                }
             console.log(response);
           } catch (error) {
-              if(error.response && error.response.status === 401){
-             alert(error.response.data.message)
-              } else {
-             alert("Login Failed")
-               }
-            console.log("Error in login",error);
-          }
+             
+             setPopup({
+              show: true,
+              message:error.response.data.message ||  "Login failed. Try again.",
+              type:"error"
+             })
+              }  
     }
 
   return (
@@ -46,6 +60,19 @@ const Login = () => {
         <br />
         <Link to={"/signup"}><p className="signin">Create Account →</p></Link>
     </div>
+
+    {popup.show && (
+  <div className={style.popupOverlay}>
+    <div className={`${style.popupBox} ${
+      popup.type === "success" ? style.success : style.error
+    }`}>
+      <p>{popup.message}</p>
+      <button onClick={() => setPopup({ ...popup, show: false })}>
+        OK
+      </button>
+    </div>
+  </div>
+)}
     </div>
   )
 }

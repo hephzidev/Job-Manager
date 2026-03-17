@@ -17,7 +17,7 @@ const Homepage = () => {
                 <p className={style.navItem}>For Organization</p>
             </div>
             <div className={style.navButtons}>
-                <Link to={"/signup"}><p className={style.loginBtn}>Login</p></Link>
+                <Link to={"/login"}><p className={style.loginBtn}>Login</p></Link>
               
               <Link to={"/signup"}><button className={style.startBtn}>Get started</button></Link>
             </div>

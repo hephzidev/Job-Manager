@@ -2,17 +2,19 @@ import React, { useState } from 'react'
 import style from "./Addjob.module.css"
 import axios from 'axios'
 
-const Addjob = ({closePopup}) => {
+const Addjob = ({closePopup,refreshJobs }) => {
 
     const[details,setDetails]=useState({
        companyName:"",
        position:"",
-        column:"Applied",
+       status:"Applied",
        salary:"",
        jobtype:"",
+       jobURL:"",
        location:"",
        appliedOn:"",
-        deadline:""
+       deadline:"",
+       description:""
     })
     console.log(details);
     
@@ -26,16 +28,19 @@ const Addjob = ({closePopup}) => {
             let response=await axios.post("http://localhost:3000/create",details)
             console.log(response);
             setDetails({
-        companyName:"",
+       companyName:"",
        position:"",
-        column:"",
+       status:"",
        salary:"",
        jobtype:"",
+       jobURL:"",
        location:"",
        appliedOn:"",
-        deadline:""
+       deadline:"",
+       description:""
             })
         closePopup()
+        refreshJobs()
             
         } catch (error) {
             
@@ -58,13 +63,13 @@ const Addjob = ({closePopup}) => {
     </div>
 
     <div className="col-md-4">
-      <label className="form-label">Column</label>
-      <select name="column" value={details.column} className="form-select" onChange={changeDetails}>
+      <label className="form-label">Status</label>
+      <select name="status" value={details.status} className="form-select" onChange={changeDetails}>
         <option value="Applied">Applied</option>
         <option value="Interviewing">Interviewing</option>
         <option value="Offer">Offer</option>
         <option value="Rejected">Rejected</option>
-        <option value="Whishlist">Whishlist</option>
+        <option value="Wishlist">Wishlist</option>
       </select>
     </div>
 
@@ -81,6 +86,10 @@ const Addjob = ({closePopup}) => {
         <option>Part Time</option>
       </select>
     </div>
+    <div className="col-md-4">
+  <label className="form-label">Job URL</label>
+  <input type="text" name="jobURL" value={details.jobURL} onChange={changeDetails} placeholder="https://example.com" className="form-control"/>
+</div>
 
     <div className="col-md-4">
       <label className="form-label">Location</label>
@@ -96,13 +105,21 @@ const Addjob = ({closePopup}) => {
       <label className="form-label">Deadline</label>
       <input type="date" name="deadline" value={details.deadline} className="form-control" onChange={changeDetails}/>
     </div>
+
+     <div className="col-md-12">
+  <label>Description</label>
+  <textarea
+    name="description"
+    className="form-control"
+    value={details.description}
+    onChange={changeDetails}
+    rows="4"
+  />
+</div>
    
-   <div className="col-md-4">
-    <br />
+   <div className="col-12 d-flex justify-content-end mt-3">
     <button type="button" className="btn btn-primary" onClick={updateDetails}>save</button>
     <button type="button" className="btn btn-secondary ms-2" onClick={closePopup}>Close</button>
-
-
    </div>
    
     
