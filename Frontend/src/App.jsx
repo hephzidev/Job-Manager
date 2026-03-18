@@ -6,6 +6,7 @@ import Login from './Login'
 import Addjob from './Addjob'
 import Edit from './Edit.jsx'
 import Boardpage from './Boardpage.jsx'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   return (

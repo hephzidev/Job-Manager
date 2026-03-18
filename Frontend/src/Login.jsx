@@ -38,7 +38,7 @@ const Login = () => {
                })
                setTimeout(() => {
                navigate("/board");
-               }, 1200);
+               }, 1000);
                }
             console.log(response);
           } catch (error) {

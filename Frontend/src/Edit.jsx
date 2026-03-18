@@ -25,10 +25,8 @@ const Edit = () => {
         try {
            let response=await axios.get("http://localhost:3000/viewall") 
            console.log(response.data.data);
-           setJobs(response.data.data)
-           
+           setJobs(response.data.data) 
         } catch (error) {
-            
         }
     }
     useEffect(()=>{
@@ -91,7 +89,7 @@ const Edit = () => {
 
     <div className={style.modalHeader}>
       <h2>Edit Job Details</h2>
-     <Link to={"/board"}> <span className={style.close}>✕</span></Link>
+     <Link to={"/board"} className={style.closeLink}> <span className={style.close}>✕</span></Link>
     </div>
 
     <div className={style.formGrid}>
@@ -134,7 +132,7 @@ const Edit = () => {
   <label>Job URL</label>
   <input
     type="text"
-    name="url"
+    name="jobURL"
     value={details.jobURL}
     onChange={changeDetails}
     placeholder="https://example.com"

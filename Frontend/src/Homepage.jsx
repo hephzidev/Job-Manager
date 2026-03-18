@@ -32,7 +32,6 @@ const Homepage = () => {
         <p className={style.subHeading}>Track your job applications effortlessly, gain valuable insights, all in one place</p>
         <div className={style.heroButtons}>
             <Link to={"/signup"}><button className={style.getStartedBtn}>Get Started - It's free</button></Link>
-           <button className={style.chromeBtn}>chrome extension</button>
         </div>
     </div>
            

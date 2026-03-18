@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import style from "./Addjob.module.css"
 import axios from 'axios'
 
 const Addjob = ({closePopup,refreshJobs }) => {
@@ -121,7 +120,6 @@ const Addjob = ({closePopup,refreshJobs }) => {
     <button type="button" className="btn btn-primary" onClick={updateDetails}>save</button>
     <button type="button" className="btn btn-secondary ms-2" onClick={closePopup}>Close</button>
    </div>
-   
     
 
   </div>

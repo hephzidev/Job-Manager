@@ -5,6 +5,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { useParams,Link } from 'react-router-dom'
 
+
 const Webpage = () => {
     const [showAddJob,setShowAddJob] = useState(false)
     const[jobs,setJobs]=useState([])
@@ -284,9 +285,14 @@ className={style.search} onChange={searchValue}
         <span>Salary:</span> {viewJob.salary}
       </p>
 
+       <p className={style.viewText}>
+        <span>JobURL: </span> 
+                <a className={style.link+ " " + style.wordBreak}  href={viewJob.jobURL.startsWith("http") ? viewJob.jobURL : `https://${viewJob.jobURL}`}>{viewJob.jobURL}</a>
+      </p>
+      
       <p className={style.viewText}>
         <span>Location:</span> 
-                <a className={style.link} href={`http://www.google.com/maps/search/${viewJob.location}`}>{viewJob.location}</a>
+                <a className={style.link+ " " + style.wordBreak} href={`http://www.google.com/maps/search/${viewJob.location}`}>{viewJob.location}</a>
       </p>
 
       <p className={style.viewText}>
@@ -298,7 +304,7 @@ className={style.search} onChange={searchValue}
       </p>
 
       <div className={style.descriptionBox}>
-        {viewJob.description}
+       <span>Description:  </span> {viewJob.description}
       </div>
 
     </div>
