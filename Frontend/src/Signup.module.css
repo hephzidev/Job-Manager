@@ -37,3 +37,76 @@
   color:#555;
   cursor:pointer;
 }
+
+/* //popup// */
+
+/* Popup container */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  min-width: 280px;
+  padding: 15px 20px;
+  border-radius: 10px;
+  color: white;
+  z-index: 9999;
+  animation: slideIn 0.3s ease;
+  box-shadow: 0 5px 20px rgba(226, 223, 223, 0.2);
+}
+
+/* Success */
+.success {
+  background: linear-gradient(135deg, #28a745, #5cd65c);
+}
+
+/* Error */
+.error {
+  background: linear-gradient(135deg, #dc3545, #ff6b6b);
+}
+
+/* Content layout */
+.toastcontent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Close button */
+.toastclose {
+    background: rgba(255, 255, 255, 0.2); /* add this */
+  border: none;
+  color: white;
+  width: 28px;              /* add */
+  height: 28px;             /* add */
+  border-radius: 50%;       /* add */
+  font-size: 16px;          /* slightly smaller */
+  display: flex;            /* add */
+  align-items: center;      /* add */
+  justify-content: center;  /* add */
+  cursor: pointer;
+  opacity: 0.9;
+  transition: all 0.2s ease
+}
+/* Hover effect */
+.toastClose:hover {
+  background: rgba(255, 255, 255, 0.35); /* smoother change */
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+/* Click effect */
+.toastClose:active {
+  transform: scale(0.9);
+}
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

@@ -32,10 +32,11 @@ const Login = () => {
             let response=await axios.post("http://localhost:3000/signin",details)
               if(response.status === 200){
                setPopup({
-                message:response.data.message || "Login successful",
+                show: true,
+                message:response.data.message || "Login successful! Redirecting...",
                 type:"success"
                })
-                setTimeout(() => {
+               setTimeout(() => {
                navigate("/board");
                }, 1200);
                }
@@ -67,9 +68,13 @@ const Login = () => {
       popup.type === "success" ? style.success : style.error
     }`}>
       <p>{popup.message}</p>
-      <button onClick={() => setPopup({ ...popup, show: false })}>
-        OK
-      </button>
+      <button
+  onClick={() => {
+    navigate("/board");   
+    setPopup({ ...popup, show: false }); 
+}}>
+  
+</button>
     </div>
   </div>
 )}
