@@ -1,6 +1,7 @@
 const { json } = require("express");
 let jobschema=require("./JobSchema")
 let userSchema=require("./UserSchema")
+const bcrypt=require("bcrypt")
 
 const createJob=async(req,res)=>{
     let a=req.body.companyName;
@@ -122,6 +123,7 @@ const createAccount=async(req,res)=>{
        if (!userName || !userEmail || !userPassword) {
       return res.status(400) .json({ message: "All fields are required" });
     }
+    const hashedPassword=await bcrypt.hash(userPassword,10)
        
     const existingUser = await userSchema.findOne({ userEmail });
     if (existingUser) {
@@ -130,7 +132,7 @@ const createAccount=async(req,res)=>{
         const newUser=new userSchema({
             userName,
             userEmail,
-            userPassword,
+            userPassword:hashedPassword,
         })
         await newUser.save()
         return res.status(201).json({
@@ -167,7 +169,8 @@ const loginAccount=async(req,res)=>{
                 message:"Invalid email"
             })
         }
-        if(user.userPassword!==userPassword){
+        const isMatch=await bcrypt.compare(userPassword, user.userPassword)
+        if( !isMatch ){
             return res.status(401).json({
                 message:"Invalid password"
             }) 

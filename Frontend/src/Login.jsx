@@ -13,6 +13,9 @@ const Login = () => {
       message:"",
       type:""
     })
+
+  
+
     const navigate=useNavigate()
     console.log(details);
     
@@ -30,18 +33,26 @@ const Login = () => {
              }
           try {
             let response=await axios.post("http://localhost:3000/signin",details)
+             console.log("RESPONSE:", response.data); 
               if(response.status === 200){
+                 const name = response.data.data.userName;
+
                   localStorage.setItem("userId", response.data.userId);
+                  localStorage.setItem("userName", name)
+                 
+                   console.log("SAVED:", name);
                setPopup({
                 show: true,
                 message:response.data.message || "Login successful! Redirecting...",
                 type:"success"
                })
                setTimeout(() => {
+                console.log("Before navigate:", localStorage.getItem("userName"));
                navigate("/board");
                }, 1000);
                }
             console.log(response);
+            console.log("BOARD USER:", localStorage.getItem("userName"));
           } catch (error) {
              
              setPopup({
@@ -60,6 +71,7 @@ const Login = () => {
              }, 1000);
               }  
          }
+
 
   return (
     <div className={style.logincontainer}>

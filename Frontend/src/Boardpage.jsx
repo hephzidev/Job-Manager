@@ -14,9 +14,14 @@ const Webpage = () => {
     const [deleteId,setDeleteId] = useState(null)
     const [viewJob, setViewJob] = useState();
     const userId = localStorage.getItem("userId");
+    const [searchText, setSearchText] = useState("");
+    const [filterType, setFilterType] = useState("companyName");
+    const [userName, setUserName] = useState("User");
     
 
     const{id}=useParams()
+  
+  
 
     async function fetchDetails(){
         try {
@@ -32,6 +37,8 @@ const Webpage = () => {
         fetchDetails()
     },[])
 
+  console.log(localStorage.getItem("userName"));
+    
     
     async function deleteDetails(id){
         try {
@@ -47,7 +54,17 @@ const Webpage = () => {
     function searchValue(e){
        setSearch(e.target.value)
     }
-    
+    const filteredJobs = jobs.filter((job) => {
+             return job[filterType]
+                 ?.toLowerCase().includes(searchText.toLowerCase());
+    });
+
+    useEffect(() => {
+  const name = localStorage.getItem("userName");
+  if (name) {
+    setUserName(name);
+  }
+}, []);
 
   return (
     <div>
@@ -56,12 +73,28 @@ const Webpage = () => {
 
 <input 
 type="text" 
-placeholder="Search company, position..."
-className={style.search} onChange={searchValue}
+placeholder={`Search ${filterType}...`}
+className={style.search} onChange={(e)=>setSearchText(e.target.value)}
 />
 
 <div className={style.headerbuttons}>
     {/* <img className={style.image} src="user (1).png" alt="" /> */}
+    <span>Welcome, {userName || "User"} 👋</span>
+   
+<div class="btn-group">
+  <button type="button" class="btn  btn-primary btn-custom dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+   ☰ Filter
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" onClick={() => setFilterType("companyName")} href="#">Company</a></li>
+    <li><a class="dropdown-item" onClick={() => setFilterType("position")} href="#">Position</a></li>
+    <li><a class="dropdown-item"  onClick={() => setFilterType("location")} href="#">Location</a></li>
+    <li><a className="dropdown-item" onClick={() => setFilterType("all")} href="#">All</a>
+</li>
+  </ul>
+</div>
+
+
     <Link to={"/login"}><button>Logout</button></Link>
 <button onClick={() => setShowAddJob(true)}>Add job</button>
 </div>
@@ -74,8 +107,22 @@ className={style.search} onChange={searchValue}
 <div className={style.jobcolumn}><p className={`${style.columnpara} ${style.box1}`}>Wishlist</p></div>
 {
     jobs
-    .filter(job=>(job.status=="Wishlist" && (job.companyName.toLowerCase().includes(search.toLowerCase()) || job.position.toLowerCase().includes(search.toLowerCase()) ||
-                                              job.location.toLowerCase().includes(search.toLowerCase()))))
+    .filter(job => job.status == "Wishlist")
+    .filter(job => {
+      const value = searchText.toLowerCase();
+
+      if (!value) return true;
+
+      if (filterType === "all") {
+        return (
+          job.companyName?.toLowerCase().includes(value) ||
+          job.position?.toLowerCase().includes(value) ||
+          job.location?.toLowerCase().includes(value)
+        );
+      }
+
+      return job[filterType]?.toLowerCase().includes(value);
+    })
     .map((job,idx)=>{
         return(
             <div key={idx} className={`${style.jobcard} ${style.cardone}`}>
@@ -103,8 +150,22 @@ className={style.search} onChange={searchValue}
 <div className={style.jobcolumn}><p className={`${style.columnpara} ${style.box2}`}>Applied</p></div>
 {
     jobs
-    .filter(job=>(job.status=="Applied" && (job.companyName.toLowerCase().includes(search.toLowerCase()) || job.position.toLowerCase().includes(search.toLowerCase())
-                                            || job.location.toLowerCase().includes(search.toLowerCase()))))
+    .filter(job => job.status == "Applied")
+    .filter(job => {
+      const value = searchText.toLowerCase();
+
+      if (!value) return true;
+
+      if (filterType === "all") {
+        return (
+          job.companyName?.toLowerCase().includes(value) ||
+          job.position?.toLowerCase().includes(value) ||
+          job.location?.toLowerCase().includes(value)
+        );
+      }
+
+      return job[filterType]?.toLowerCase().includes(value);
+    })
     .map((job,idx)=>{
         return(
             <div key={idx} className={`${style.jobcard} ${style.cardtwo}`}>
@@ -131,8 +192,22 @@ className={style.search} onChange={searchValue}
 <div className={style.jobcolumn}><p className={`${style.columnpara} ${style.box3}`}>Interviewing</p></div>
 {
     jobs
-    .filter(job=>(job.status=="Interviewing" && (job.companyName.toLowerCase().includes(search.toLowerCase()) || job.position.toLowerCase().includes(search.toLowerCase())
-                                                 || job.location.toLowerCase().includes(search.toLowerCase()))))
+    .filter(job => job.status == "Interviewing")
+    .filter(job => {
+      const value = searchText.toLowerCase();
+
+      if (!value) return true;
+
+      if (filterType === "all") {
+        return (
+          job.companyName?.toLowerCase().includes(value) ||
+          job.position?.toLowerCase().includes(value) ||
+          job.location?.toLowerCase().includes(value)
+        );
+      }
+
+      return job[filterType]?.toLowerCase().includes(value);
+    })
     .map((job,idx)=>{
         return(
             <div key={idx} className={`${style.jobcard} ${style.cardthree}`}> 
@@ -160,8 +235,22 @@ className={style.search} onChange={searchValue}
 <div className={style.jobcolumn}><p className={`${style.columnpara} ${style.box4}`}>Offer</p></div>
 {
     jobs
-    .filter(job=>(job.status=="Offer" && (job.companyName.toLowerCase().includes(search.toLowerCase()) || job.position.toLowerCase().includes(search.toLowerCase())
-                                           || job.location.toLowerCase().includes(search.toLowerCase()))))
+     .filter(job => job.status == "Offer")
+    .filter(job => {
+      const value = searchText.toLowerCase();
+
+      if (!value) return true;
+
+      if (filterType === "all") {
+        return (
+          job.companyName?.toLowerCase().includes(value) ||
+          job.position?.toLowerCase().includes(value) ||
+          job.location?.toLowerCase().includes(value)
+        );
+      }
+
+      return job[filterType]?.toLowerCase().includes(value);
+    })
     .map((job,idx)=>{
         return(
             <div key={idx} className={`${style.jobcard} ${style.cardfour}`}>
@@ -184,12 +273,27 @@ className={style.search} onChange={searchValue}
 }
 </div>
 
+
 <div className={style.column}>
 <div className={style.jobcolumn}><p className={`${style.columnpara} ${style.box5}`}>Rejected</p></div>
 {
     jobs
-    .filter(job=>(job.status=="Rejected" && (job.companyName.toLowerCase().includes(search.toLowerCase()) || job.position.toLowerCase().includes(search.toLowerCase())
-                                              || job.location.toLowerCase().includes(search.toLowerCase()))))
+   .filter(job => job.status == "Rejected")
+    .filter(job => {
+      const value = searchText.toLowerCase();
+
+      if (!value) return true;
+
+      if (filterType === "all") {
+        return (
+          job.companyName?.toLowerCase().includes(value) ||
+          job.position?.toLowerCase().includes(value) ||
+          job.location?.toLowerCase().includes(value)
+        );
+      }
+
+      return job[filterType]?.toLowerCase().includes(value);
+    })
     .map((job,idx)=>{
         return(
             <div key={idx} className={`${style.jobcard} ${style.cardfive}`}>
@@ -210,7 +314,9 @@ className={style.search} onChange={searchValue}
         )
     })
 }
+
 </div>
+
 
 {showAddJob && (
 
