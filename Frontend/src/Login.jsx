@@ -31,6 +31,7 @@ const Login = () => {
           try {
             let response=await axios.post("http://localhost:3000/signin",details)
               if(response.status === 200){
+                  localStorage.setItem("userId", response.data.userId);
                setPopup({
                 show: true,
                 message:response.data.message || "Login successful! Redirecting...",
@@ -48,8 +49,17 @@ const Login = () => {
               message:error.response.data.message ||  "Login failed. Try again.",
               type:"error"
              })
+
+               setTimeout(() => {
+            setPopup({
+            show: false,
+             message: "",
+           type: ""
+            });
+
+             }, 1000);
               }  
-    }
+         }
 
   return (
     <div className={style.logincontainer}>
@@ -65,17 +75,12 @@ const Login = () => {
     {popup.show && (
   <div className={style.popupOverlay}>
     <div className={`${style.popupBox} ${
-      popup.type === "success" ? style.success : style.error
-    }`}>
+      popup.type === "success" ? style.success : style.error}`}>
       <p>{popup.message}</p>
-      <button
-  onClick={() => {
-    navigate("/board");   
-    setPopup({ ...popup, show: false }); 
-}}>
-  
-</button>
+      <button onClick={() => {navigate("/board");   
+    setPopup({ ...popup, show: false }) }}> </button>
     </div>
+
   </div>
 )}
     </div>

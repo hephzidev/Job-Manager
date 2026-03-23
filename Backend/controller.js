@@ -2,7 +2,7 @@ const { json } = require("express");
 let jobschema=require("./JobSchema")
 let userSchema=require("./UserSchema")
 
-const addJob=async(req,res)=>{
+const createJob=async(req,res)=>{
     let a=req.body.companyName;
     let b=req.body.position;
     let c=req.body.status;
@@ -12,8 +12,8 @@ const addJob=async(req,res)=>{
     let g=req.body.location;
     let h=req.body.appliedOn;
     let i=req.body.deadline;
-    let j=req.body.description
-
+    let j=req.body.description;
+    let k=req.body.userId
 try {
     const newJob=new jobschema({
         companyName:a,
@@ -25,7 +25,8 @@ try {
         location:g,
         appliedOn:h,
         deadline:i,
-        description:j
+        description:j,
+        userId:k
     })
     await newJob.save()
     res.status(201).json({
@@ -70,10 +71,11 @@ const updateJob=async(req,res)=>{
 
 const viewAll=async(req,res)=>{
           try {
-            let datas=await jobschema.find()
+            const userId=req.query.userId
+            let jobs=await jobschema.find({userId})
             res.json({
                 message:"Data got successfully",
-                data:datas
+                data:jobs
             })
           } catch (error) {
             res.json({
@@ -85,10 +87,10 @@ const viewAll=async(req,res)=>{
 
 const viewDetails=async(req,res)=>{
     try {
-        let data=await jobschema.findById(req.params.id)
+        let job=await jobschema.findById(req.params.id)
         res.json({
             message:"Details fetched successfully",
-            data:data
+            data:job
         })
     } catch (error) {
         res.json({
@@ -114,8 +116,8 @@ const deleteJob=async(req,res)=>{
     }
 }
 
-const creteAccount=async(req,res)=>{
-     const { userName, userEmail, userPassword } = req.body;
+const createAccount=async(req,res)=>{
+     const { userName, userEmail, userPassword} = req.body;
     try {
        if (!userName || !userEmail || !userPassword) {
       return res.status(400) .json({ message: "All fields are required" });
@@ -172,8 +174,10 @@ const loginAccount=async(req,res)=>{
         }
         return res.status(200).json({
             message:"Login successfull",
+            userId: user._id, 
             data:user
         })
+        
     } catch (error) {
         if(error.response){
              setPopup({
@@ -190,4 +194,4 @@ const loginAccount=async(req,res)=>{
     }
 }
 
-module.exports={addJob,updateJob,viewAll,viewDetails,deleteJob,creteAccount,loginAccount}
+module.exports={createJob,updateJob,viewAll,viewDetails,deleteJob,createAccount,loginAccount}

@@ -340,3 +340,7 @@ cursor:pointer;
   word-break: break-all; 
   overflow-wrap: break-word;
 }
+.image{
+  height: 20px;
+  color: white;
+}

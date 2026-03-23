@@ -13,13 +13,14 @@ const Webpage = () => {
     const [showDeletePopup,setShowDeletePopup] = useState(false)
     const [deleteId,setDeleteId] = useState(null)
     const [viewJob, setViewJob] = useState();
+    const userId = localStorage.getItem("userId");
     
 
     const{id}=useParams()
 
     async function fetchDetails(){
         try {
-           let response=await axios.get("http://localhost:3000/viewall") 
+           let response=await axios.get(`http://localhost:3000/viewall?userId=${userId}`) 
            console.log(response.data.data);
            setJobs(response.data.data)
            
@@ -46,7 +47,7 @@ const Webpage = () => {
     function searchValue(e){
        setSearch(e.target.value)
     }
-
+    
 
   return (
     <div>
@@ -60,6 +61,7 @@ className={style.search} onChange={searchValue}
 />
 
 <div className={style.headerbuttons}>
+    {/* <img className={style.image} src="user (1).png" alt="" /> */}
     <Link to={"/login"}><button>Logout</button></Link>
 <button onClick={() => setShowAddJob(true)}>Add job</button>
 </div>

@@ -227,3 +227,16 @@ textarea{
   text-decoration: none;
   color: inherit;
 }
+
+.errorInput {
+  border: 1px solid red;
+}
+
+.errorText {
+  color: red;
+  font-size: 12px;
+  margin: 0;
+}
+.labelFix{
+    margin: 0;
+}

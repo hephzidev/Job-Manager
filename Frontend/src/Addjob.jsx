@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import style from "./Addjob.module.css"
 
 const Addjob = ({closePopup,refreshJobs }) => {
+  const userId = localStorage.getItem("userId");
+  const [errors, setErrors] = useState({});
 
     const[details,setDetails]=useState({
        companyName:"",
@@ -13,7 +16,8 @@ const Addjob = ({closePopup,refreshJobs }) => {
        location:"",
        appliedOn:"",
        deadline:"",
-       description:""
+       description:"",
+       userId:""
     })
     console.log(details);
     
@@ -24,7 +28,8 @@ const Addjob = ({closePopup,refreshJobs }) => {
 
     async function updateDetails(){
         try {
-            let response=await axios.post("http://localhost:3000/create",details)
+           if (!validate()) return;
+            let response=await axios.post("http://localhost:3000/create",{...details,userId})
             console.log(response);
             setDetails({
        companyName:"",
@@ -45,6 +50,24 @@ const Addjob = ({closePopup,refreshJobs }) => {
             
         }
     }
+      function validate() {
+       let newErrors = {};
+
+  if (!details.companyName.trim()) {
+    newErrors.companyName = "Company name is required";
+  }
+  if (!details.position.trim()) {
+    newErrors.position = "Position is required";
+  }
+  if (!details.salary) {
+    newErrors.salary = "Salary is required";
+  }
+  if (!details.location) {
+    newErrors.location = "Salary is required";
+  }
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0; // ✅ true if no errors
+}
 
   return (
     <div>
@@ -53,14 +76,22 @@ const Addjob = ({closePopup,refreshJobs }) => {
 
     <div className="col-md-4">
       <label className="form-label">Company Name*</label>
-      <input type="text" name="companyName" value={details.companyName} className="form-control" placeholder="Company Name" onChange={changeDetails}/>
+      <input type="text" name="companyName" value={details.companyName}  className={`form-control ${style.labelFix} ${errors.companyName ? style.errorInput : ""}`} placeholder="Company Name" onChange={changeDetails} />
+      {errors.companyName && (
+           <p className={style.errorText}>{errors.companyName}</p>
+    )}
     </div>
+   
 
     <div className="col-md-4">
       <label className="form-label">Position*</label>
-      <input type="text" name="position" value={details.position} className="form-control" placeholder="Position" onChange={changeDetails}/>
-    </div>
-
+      <input type="text" name="position" value={details.position} className={`form-control ${style.labelFix} ${errors.position ? style.errorInput : ""}`}  placeholder="Position" onChange={changeDetails} />
+     {errors.position && (
+       <p className={style.errorText}>{errors.position}</p>
+        )}
+      </div>
+    
+        
     <div className="col-md-4">
       <label className="form-label">Status</label>
       <select name="status" value={details.status} className="form-select" onChange={changeDetails}>
@@ -74,12 +105,15 @@ const Addjob = ({closePopup,refreshJobs }) => {
 
     <div className="col-md-4">
       <label className="form-label">Salary</label>
-      <input type="number"  name="salary" value={details.salary} className="form-control" placeholder="Salary" onChange={changeDetails}/>
+      <input type="number"  name="salary" value={details.salary} className={`form-control ${style.labelFix} ${errors.salary ? style.errorInput : ""}`} placeholder="Salary" onChange={changeDetails}/>
+       {errors.salary && (
+       <p className={style.errorText}>{errors.salary}</p>
+        )}
     </div>
 
     <div className="col-md-4">
       <label className="form-label">Job Type</label>
-      <select name="jobtype" value={details.jobtype} className="form-select" onChange={changeDetails}>
+      <select name="jobtype" value={details.jobtype} className= "form-control"  onChange={changeDetails}>
         <option>Choose</option>
         <option>Full Time</option>
         <option>Part Time</option>
@@ -92,7 +126,10 @@ const Addjob = ({closePopup,refreshJobs }) => {
 
     <div className="col-md-4">
       <label className="form-label">Location</label>
-      <input type="text" name="location" value={details.location} className="form-control" placeholder="Location" onChange={changeDetails}/>
+      <input type="text" name="location" value={details.location} className={`form-control ${style.labelFix} ${errors.location ? style.errorInput : ""}`}  placeholder="Location" onChange={changeDetails}/>
+     {errors.location && (
+       <p className={style.errorText}>{errors.location}</p>
+        )}
     </div>
 
     <div className="col-md-4">
@@ -120,7 +157,7 @@ const Addjob = ({closePopup,refreshJobs }) => {
     <button type="button" className="btn btn-primary" onClick={updateDetails}>save</button>
     <button type="button" className="btn btn-secondary ms-2" onClick={closePopup}>Close</button>
    </div>
-    
+
 
   </div>
 

@@ -2,7 +2,7 @@ let express=require("express")
 let routes=express.Router()
 let controller=require("./controller")
 
-routes.post("/create",controller.addJob)
+routes.post("/create",controller.createJob)
 
 routes.put("/edit/:id",controller.updateJob)
 
@@ -12,7 +12,7 @@ routes.get("/view/:id",controller.viewDetails)
 
 routes.delete("/delete/:id",controller.deleteJob)
 
-routes.post("/signup",controller.creteAccount)
+routes.post("/signup",controller.createAccount)
 
 routes.post("/signin",controller.loginAccount)
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams,useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import style from "./Edit.module.css"
 
@@ -20,6 +20,9 @@ const Edit = () => {
     const [originalDetails, setOriginalDetails] = useState({})
     const[jobs,setJobs]=useState([])
     const [showAddJob,setShowAddJob] = useState(false)
+    const [errors, setErrors] = useState({});
+
+    const navigate=useNavigate()
 
      async function fetchDetails(){
         try {
@@ -33,14 +36,35 @@ const Edit = () => {
         fetchDetails()
     },[])
 
+    function validate() {
+       let newErrors = {};
+
+  if (!details.companyName.trim()) {
+    newErrors.companyName = "Company name is required";
+  }
+  if (!details.position.trim()) {
+    newErrors.position = "Position is required";
+  }
+  if (!details.salary) {
+    newErrors.salary = "Salary is required";
+  }
+   if (!details.location) {
+    newErrors.location = "Location is required";
+  }
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0; // ✅ true if no errors
+}
+
     function changeDetails(e){
       setDetails((prev)=>({...prev,[e.target.name]:e.target.value}))
     }
     console.log(details);
     
     async function updateDetails(){
+      if (!validate()) return;
       try {
         let response=await axios.put(`http://localhost:3000/edit/${id}`,details)
+        navigate("/board"); 
       } catch (error) {
         console.log(error);
       }
@@ -49,12 +73,30 @@ const Edit = () => {
     async function fetchDetailsSingle(){
       try {
         let response=await axios.get(`http://localhost:3000/view/${id}`)
-        setDetails({...response.data.data,
-          appliedOn: response.data.data.appliedOn?.split("T")[0],
-        deadline: response.data.data.deadline?.split("T")[0]})
-         setOriginalDetails({...response.data.data,
-          appliedOn: response.data.data.appliedOn?.split("T")[0],
-        deadline: response.data.data.deadline?.split("T")[0]})
+        setDetails({
+            companyName: response.data.data.companyName || "",
+  position: response.data.data.position || "",
+  status: response.data.data.status || "",
+  salary: response.data.data.salary || "",
+  jobtype: response.data.data.jobtype || "",
+  jobURL: response.data.data.jobURL || "",
+  location: response.data.data.location || "",
+  appliedOn: response.data.data.appliedOn?.split("T")[0] || "",
+  deadline: response.data.data.deadline?.split("T")[0] || "",
+  description: response.data.data.description || ""
+        })
+         setOriginalDetails({
+            companyName: response.data.data.companyName || "",
+  position: response.data.data.position || "",
+  status: response.data.data.status || "",
+  salary: response.data.data.salary || "",
+  jobtype: response.data.data.jobtype || "",
+  jobURL: response.data.data.jobURL || "",
+  location: response.data.data.location || "",
+  appliedOn: response.data.data.appliedOn?.split("T")[0] || "",
+  deadline: response.data.data.deadline?.split("T")[0] || "",
+  description: response.data.data.description || ""
+         })
       } catch (error) {
         console.log("Error in fetching data",error);
         
@@ -96,12 +138,19 @@ const Edit = () => {
 
       <div className={style.inputGroup}>
         <label>Company Name</label>
-        <input type="text" name="companyName" value={details.companyName} onChange={changeDetails}/>
+        <input type="text" name="companyName" value={details.companyName} onChange={changeDetails}  className={`${style.labelFix} ${errors.companyName ? style.errorInput : ""}`}/>
+          {errors.companyName && (
+                   <p className={style.errorText}>{errors.companyName}</p>
+            )}
       </div>
+    
 
       <div className={style.inputGroup}>
         <label>Position</label>
-        <input type="text" name="position" value={details.position} onChange={changeDetails}/>
+        <input type="text" name="position" value={details.position} onChange={changeDetails}  className={`${style.labelFix} ${errors.position ? style.errorInput : ""}`}/>
+         {errors.position && (
+               <p className={style.errorText}>{errors.position}</p>
+         )}
       </div>
 
       <div className={style.inputGroup}>
@@ -117,7 +166,10 @@ const Edit = () => {
 
       <div className={style.inputGroup}>
         <label>Salary</label>
-        <input type="number" name="salary" value={details.salary} onChange={changeDetails}/>
+        <input type="number" name="salary" value={details.salary} onChange={changeDetails} className={`${style.labelFix} ${errors.salary ? style.errorInput : ""}`}/>
+         {errors.salary && (
+               <p className={style.errorText}>{errors.salary}</p>
+         )}
       </div>
 
       <div className={style.inputGroup}>
@@ -141,7 +193,10 @@ const Edit = () => {
 
       <div className={style.inputGroup}>
         <label>Location</label>
-        <input type="text" name="location" value={details.location} onChange={changeDetails}/>
+        <input type="text" name="location" value={details.location} onChange={changeDetails} className={`${style.labelFix} ${errors.location ? style.errorInput : ""}`}/>
+         {errors.salary && (
+               <p className={style.errorText}>{errors.salary}</p>
+         )}
       </div>
 
       <div className={style.inputGroup}>
@@ -168,7 +223,7 @@ const Edit = () => {
 
     <div className={style.buttons}>
       <button onClick={clearInputs} className={style.reset}>Reset</button>
-      <Link to={"/board"}><button className={style.save} onClick={updateDetails}>Save Changes</button></Link>
+      <button className={style.save} onClick={updateDetails}>Save Changes</button>
     </div>
 
   </div>

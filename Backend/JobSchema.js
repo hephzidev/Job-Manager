@@ -9,6 +9,7 @@ const jobschema=mongoose.Schema({
     location:String,
     appliedOn:Date,
     deadline:Date,
-    description:String
+    description:String,
+    userId: String
 })
 module.exports=mongoose.model("track",jobschema)
