@@ -79,7 +79,12 @@ className={style.search} onChange={(e)=>setSearchText(e.target.value)}
 
 <div className={style.headerbuttons}>
     {/* <img className={style.image} src="user (1).png" alt="" /> */}
-    <span>Welcome, {userName || "User"} 👋</span>
+    <div className={style.container}>
+  <img src="profile.png" className={style.profileimage} alt="user avatar"/>
+  <span className={style.badge}>
+    Welcome, {userName || "User"} 👋
+  </span>
+</div>
    
 <div class="btn-group">
   <button type="button" class="btn  btn-primary btn-custom dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">

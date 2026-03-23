@@ -3,119 +3,6 @@ let jobschema=require("./JobSchema")
 let userSchema=require("./UserSchema")
 const bcrypt=require("bcrypt")
 
-const createJob=async(req,res)=>{
-    let a=req.body.companyName;
-    let b=req.body.position;
-    let c=req.body.status;
-    let d=req.body.salary;
-    let e=req.body.jobtype;
-    let f=req.body.jobURL;
-    let g=req.body.location;
-    let h=req.body.appliedOn;
-    let i=req.body.deadline;
-    let j=req.body.description;
-    let k=req.body.userId
-try {
-    const newJob=new jobschema({
-        companyName:a,
-        position:b,
-        status:c,
-        salary:d,
-        jobtype:e,
-        jobURL:f,
-        location:g,
-        appliedOn:h,
-        deadline:i,
-        description:j,
-        userId:k
-    })
-    await newJob.save()
-    res.status(201).json({
-        message:"Job added successfully"
-    })
-} catch (error) {
-    res.json({
-        message:"Error in adding job",
-        Error:error
-    })
-}
-}
-
-
-//edit job
-const updateJob=async(req,res)=>{
-    try {
-    let companyName=req.body.companyName;
-    let position= req.body.position;
-    let status= req.body.status;
-    let salary= req.body.salary;
-    let jobtype= req.body.jobtype;
-     let jobURL=req.body.jobURL;
-    let location= req.body.location;
-    let appliedOn =req.body.appliedOn;
-    let deadline=req.body.deadline;
-    let description= req.body.description
-    let updatedjob=await jobschema.findByIdAndUpdate(req.params.id,{companyName,position,status,
-                   salary,jobtype,jobURL,location,appliedOn,deadline,description},{new:true})
-     res.json({
-            message:"job updated successfully",
-            data:updatedjob
-        })           
-    } catch (error) {
-        res.json({
-            message:"Error in updating",
-            Error:error
-        })
-    }
-}
-
-
-const viewAll=async(req,res)=>{
-          try {
-            const userId=req.query.userId
-            let jobs=await jobschema.find({userId})
-            res.json({
-                message:"Data got successfully",
-                data:jobs
-            })
-          } catch (error) {
-            res.json({
-                message:"Error in getting data",
-                error:error
-            })
-          }
-}
-
-const viewDetails=async(req,res)=>{
-    try {
-        let job=await jobschema.findById(req.params.id)
-        res.json({
-            message:"Details fetched successfully",
-            data:job
-        })
-    } catch (error) {
-        res.json({
-            message:"Error in fetching details",
-            Error:error
-        })
-    }
-}
-
-
-const deleteJob=async(req,res)=>{
-    try {
-        let deletedJob=await jobschema.findByIdAndDelete(req.params.id)
-        res.json({
-            message:"Job deleted successfully",
-            data:deletedJob
-        })
-    } catch (error) {
-        res.json({
-            message:"Error in deleting job",
-            Error:error
-        })
-    }
-}
 
 const createAccount=async(req,res)=>{
      const { userName, userEmail, userPassword} = req.body;
@@ -196,5 +83,103 @@ const loginAccount=async(req,res)=>{
         }
     }
 }
+
+
+const createJob=async(req,res)=>{
+    const{companyName,position,status,salary,jobtype,jobURL,location,appliedOn,deadline,description,userId}= req.body
+try {
+    const newJob=new jobschema({
+        companyName,
+        position,
+        status,
+        salary,
+        jobtype,
+        jobURL,
+        location,
+        appliedOn,
+        deadline,
+        description,
+        userId
+    })
+    await newJob.save()
+    res.status(201).json({
+        message:"Job added successfully"
+    })
+} catch (error) {
+    res.json({
+        message:"Error in adding job",
+        Error:error
+    })
+}
+}
+
+
+//edit job
+const updateJob=async(req,res)=>{
+    try {
+        const{companyName,position,status,salary,jobtype,jobURL,location,appliedOn,deadline,description}=req.body
+    let updatedjob=await jobschema.findByIdAndUpdate(req.params.id,{companyName,position,status,
+                   salary,jobtype,jobURL,location,appliedOn,deadline,description},{new:true})
+     res.json({
+            message:"job updated successfully",
+            data:updatedjob
+        })           
+    } catch (error) {
+        res.json({
+            message:"Error in updating",
+            Error:error
+        })
+    }
+}
+
+
+const viewAll=async(req,res)=>{
+          try {
+            const userId=req.query.userId
+            let jobs=await jobschema.find({userId})
+            res.json({
+                message:"Data got successfully",
+                data:jobs
+            })
+          } catch (error) {
+            res.json({
+                message:"Error in getting data",
+                error:error
+            })
+          }
+}
+
+const viewDetails=async(req,res)=>{
+    try {
+        let job=await jobschema.findById(req.params.id)
+        res.json({
+            message:"Details fetched successfully",
+            data:job
+        })
+    } catch (error) {
+        res.json({
+            message:"Error in fetching details",
+            Error:error
+        })
+    }
+}
+
+
+const deleteJob=async(req,res)=>{
+    try {
+        let deletedJob=await jobschema.findByIdAndDelete(req.params.id)
+        res.json({
+            message:"Job deleted successfully",
+            data:deletedJob
+        })
+    } catch (error) {
+        res.json({
+            message:"Error in deleting job",
+            Error:error
+        })
+    }
+}
+
+
 
 module.exports={createJob,updateJob,viewAll,viewDetails,deleteJob,createAccount,loginAccount}

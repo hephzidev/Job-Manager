@@ -42,6 +42,12 @@ cursor:pointer;
   --bs-btn-focus-shadow-rgb: 108, 99, 255;
 }
 
+.profileimage {
+  height: 30px;
+  margin-right: 10px;
+  margin-bottom: 3px;
+  
+}
 
 
 
