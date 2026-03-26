@@ -54,21 +54,14 @@ const Login = () => {
             console.log(response);
             console.log("BOARD USER:", localStorage.getItem("userName"));
           } catch (error) {
-             
+             const message = error?.response?.data?.message || "Login failed. Try again.";
              setPopup({
               show: true,
-              message:error.response.data.message ||  "Login failed. Try again.",
+              message,
               type:"error"
              })
 
-               setTimeout(() => {
-            setPopup({
-            show: false,
-             message: "",
-           type: ""
-            });
-
-             }, 1000);
+             setTimeout(() => setPopup({ show: false, message: "", type: "" }), 3000);
               }  
          }
 

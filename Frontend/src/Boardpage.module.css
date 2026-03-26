@@ -104,7 +104,7 @@ overflow:auto;
     gap: 10px;
 }
 .jobcard{
-background:white;
+background: white;
 padding:15px;
 border-radius:10px;
 box-shadow:0 4px 10px rgba(19, 19, 19, 0.1);
@@ -368,4 +368,31 @@ cursor:pointer;
 .image{
   height: 20px;
   color: white;
+}
+
+.card {
+  position: relative;
+  background: white;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+/* 👇 hidden by default */
+.heartBox {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* 👇 show on hover */
+.card:hover .heartBox {
+  opacity: 1;
+}
+
+/* liked state */
+.liked {
+  opacity: 1 !important;
 }

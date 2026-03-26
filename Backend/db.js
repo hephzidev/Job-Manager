@@ -5,9 +5,10 @@ const connectDB=()=>{
      console.log("Database connected successfully");
      
    } catch (error) {
-    console.log("Error in connecting DataBase");
-    
+    console.error("❌ Error connecting to database:", error.message);
+    process.exit(1); // stop server if DB fails
    }
 }
+
 
 module.exports=connectDB

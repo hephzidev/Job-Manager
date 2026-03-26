@@ -10,6 +10,7 @@ const jobschema=mongoose.Schema({
     appliedOn:Date,
     deadline:Date,
     description:String,
-    userId: String
+    userId: String,
+    likedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
 })
-module.exports=mongoose.model("track",jobschema)
+module.exports=mongoose.model("job",jobschema)

@@ -1,4 +1,4 @@
-const { json } = require("express");
+const express = require("express");
 let jobschema=require("./JobSchema")
 let userSchema=require("./UserSchema")
 const bcrypt=require("bcrypt")
@@ -56,6 +56,8 @@ const loginAccount=async(req,res)=>{
                 message:"Invalid email"
             })
         }
+          console.log("Entered password:", userPassword);
+      console.log("Stored password:", user.userPassword);
         const isMatch=await bcrypt.compare(userPassword, user.userPassword)
         if( !isMatch ){
             return res.status(401).json({
@@ -69,20 +71,15 @@ const loginAccount=async(req,res)=>{
         })
         
     } catch (error) {
-        if(error.response){
-             setPopup({
-      message: error.response.data.message,
-      type: "error"
-    })
-        }
-        else{
-            setPopup({
-      message: "Login Failed",
-      type: "error"
-    })
-        }
-    }
+       
+  console.error("Login error:", error);
+
+  return res.status(500).json({
+    message: "Internal Server Error"
+  });
 }
+}
+
 
 
 const createJob=async(req,res)=>{
@@ -181,5 +178,39 @@ const deleteJob=async(req,res)=>{
 }
 
 
+const likedJob = async (req, res) => {
+  const { userId, jobId } = req.body;
 
-module.exports={createJob,updateJob,viewAll,viewDetails,deleteJob,createAccount,loginAccount}
+  try {
+    const job = await jobschema.findById(jobId);
+
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    const alreadyLiked = job.likedBy.some(
+      (id) => id.toString() === userId
+    );
+
+    if (alreadyLiked) {
+      job.likedBy.pull(userId); // unlike
+    } else {
+      job.likedBy.push(userId); // like
+    }
+
+    await job.save();
+
+    res.json({
+      message: "Like status updated",
+      likedBy: job.likedBy,
+    });
+  } catch (error) {
+    console.error("Error in liking job:", error);
+    res.status(500).json({
+      message: "Internal server error",
+      error,
+    });
+  }
+};
+
+module.exports={createAccount,loginAccount,createJob,updateJob,viewAll,viewDetails,deleteJob,likedJob}

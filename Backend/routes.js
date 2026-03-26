@@ -2,6 +2,10 @@ let express=require("express")
 let routes=express.Router()
 let controller=require("./controller")
 
+routes.post("/signup",controller.createAccount)
+
+routes.post("/signin",controller.loginAccount)
+
 routes.post("/create",controller.createJob)
 
 routes.put("/edit/:id",controller.updateJob)
@@ -12,8 +16,6 @@ routes.get("/view/:id",controller.viewDetails)
 
 routes.delete("/delete/:id",controller.deleteJob)
 
-routes.post("/signup",controller.createAccount)
-
-routes.post("/signin",controller.loginAccount)
+routes.post("/like",controller.likedJob)
 
 module.exports=routes;
