@@ -37,9 +37,25 @@ const Login = () => {
               if(response.status === 200){
                  const name = response.data.data.userName;
 
+                  
+                  localStorage.setItem("token", response.data.accesstoken)
                   localStorage.setItem("userId", response.data.userId);
                   localStorage.setItem("userName", name)
-                 
+
+                    console.log("TOKEN:", localStorage.getItem("token"));
+
+                  
+                  alert("Token saved: " + localStorage.getItem("token"));
+                  const token= localStorage.getItem("token")
+                  localStorage.getItem("token")
+
+
+                 if(!token){
+                  console.log("No token found");
+                  return
+                  
+                 }
+                 console.log(localStorage.getItem("token"));
                    console.log("SAVED:", name);
                setPopup({
                 show: true,
@@ -54,6 +70,7 @@ const Login = () => {
             console.log(response);
             console.log("BOARD USER:", localStorage.getItem("userName"));
           } catch (error) {
+            
              const message = error?.response?.data?.message || "Login failed. Try again.";
              setPopup({
               show: true,

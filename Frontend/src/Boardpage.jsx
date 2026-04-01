@@ -3,7 +3,7 @@ import style from "./Boardpage.module.css";
 import Addjob from "./Addjob.jsx";
 import { useState } from "react";
 import axios from "axios";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link , useNavigate} from "react-router-dom";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const Webpage = () => {
@@ -19,16 +19,28 @@ const Webpage = () => {
   const [userName, setUserName] = useState("User");
 
   const { id } = useParams();
+  const navigate=useNavigate()
 
   async function fetchDetails() {
     try {
-      let response = await axios.get( `http://localhost:3000/viewall?userId=${userId}`);
-        const jobsWithLike = response.data.data.map((job) => ({...job, liked: job.likedBy?.some(id => id === userId) }));
+      const token=  localStorage.getItem("token")
+      let response = await axios.get( "http://localhost:3000/viewall",
+        {headers:{
+          Authorization: `Bearer ${token}`
+        }}
+      );
+        
+       console.log("RAW RESPONSE:", response.data);
+
+        const jobsWithLike = response.data.data.map((job) => ({...job, liked: job.likedBy?.some((id) => id && String(id) === String(userId)) || false }));
         setJobs(jobsWithLike);
+          console.log("UPDATED JOBS:", jobsWithLike);
       console.log(response.data.data);
+      console.log("TOKEN IN BOARD:", token);
+      console.log("USER ID:", userId);
     } catch (error) {
       console.log(error);
-    }
+    } 
   }
   useEffect(() => {
     fetchDetails();
@@ -39,7 +51,14 @@ const Webpage = () => {
 
   async function deleteDetails(id) {
     try {
-      let deletedata = await axios.delete(`http://localhost:3000/delete/${id}`);
+      const token = localStorage.getItem("token");
+      let deletedata = await axios.delete(`http://localhost:3000/delete/${id}`,
+        {
+          headers :{
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
       console.log(deletedata);
       fetchDetails();
       setShowDeletePopup(false);
@@ -65,14 +84,20 @@ const Webpage = () => {
   async function toggleLike(jobId){
      console.log("Sending:", { userId, jobId }); 
     try {
-      let liked=await axios.post("http://localhost:3000/like",{userId,jobId})
-      
+       const token = localStorage.getItem("token");
+      //  console.log("TOKEN:", token);
+
+      let liked=await axios.post("http://localhost:3000/like",{jobId},{headers:{Authorization:`Bearer ${token}`}})
         fetchDetails(); 
     } catch (error) {
-      console.log(error); 
+      console.log("liked error:",error); 
     }
   }
 
+  function handleLogout(){
+    localStorage.clear()
+    navigate("/")
+  }
 
   return (
     <div>
@@ -141,9 +166,9 @@ const Webpage = () => {
             </ul>
           </div>
 
-          <Link to={"/login"}>
-            <button>Logout</button>
-          </Link>
+         
+            <button onClick={handleLogout}>Logout</button>
+       
           <button onClick={() => setShowAddJob(true)}>Add job</button>
         </div>
       </div>

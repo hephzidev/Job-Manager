@@ -3,7 +3,7 @@ import axios from 'axios'
 import style from "./Addjob.module.css"
 
 const Addjob = ({closePopup,refreshJobs }) => {
-  const userId = localStorage.getItem("userId");
+  
   const [errors, setErrors] = useState({});
 
     const[details,setDetails]=useState({
@@ -17,24 +17,29 @@ const Addjob = ({closePopup,refreshJobs }) => {
        appliedOn:"",
        deadline:"",
        description:"",
-       userId:""
     })
     console.log(details);
     
-
+   const userId = localStorage.getItem("userId");
+   
     function changeDetails(e){
         setDetails((prev)=>({...prev,[e.target.name]:e.target.value}))
     }
 
     async function updateDetails(){
         try {
+          const token = localStorage.getItem("token");
+          console.log("TOKEN AT SAVE:", token);
+
            if (!validate()) return;
-            let response=await axios.post("http://localhost:3000/create",{...details,userId})
-            console.log(response);
+            let response=await axios.post("http://localhost:3000/create",details,{
+              headers:{Authorization:`Bearer ${localStorage.getItem("token")}`}
+            })
+            console.log(response.data);
             setDetails({
        companyName:"",
        position:"",
-       status:"",
+       status:"Applied",
        salary:"",
        jobtype:"",
        jobURL:"",

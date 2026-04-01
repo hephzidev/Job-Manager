@@ -24,17 +24,17 @@ const Edit = () => {
 
     const navigate=useNavigate()
 
-     async function fetchDetails(){
-        try {
-           let response=await axios.get("http://localhost:3000/viewall") 
-           console.log(response.data.data);
-           setJobs(response.data.data) 
-        } catch (error) {
-        }
-    }
-    useEffect(()=>{
-        fetchDetails()
-    },[])
+    //  async function fetchDetails(){
+    //     try {
+    //        let response=await axios.get("http://localhost:3000/viewall") 
+    //        console.log(response.data.data);
+    //        setJobs(response.data.data) 
+    //     } catch (error) {
+    //     }
+    // }
+    // useEffect(()=>{
+    //     fetchDetails()
+    // },[])
 
     function validate() {
        let newErrors = {};
@@ -62,8 +62,17 @@ const Edit = () => {
     
     async function updateDetails(){
       if (!validate()) return;
+
+       const token = localStorage.getItem("token");
+
       try {
-        let response=await axios.put(`http://localhost:3000/edit/${id}`,details)
+        let response=await axios.put(`http://localhost:3000/edit/${id}`,details,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
         navigate("/board"); 
       } catch (error) {
         console.log(error);
@@ -71,8 +80,15 @@ const Edit = () => {
     }
 
     async function fetchDetailsSingle(){
+       const token = localStorage.getItem("token"); 
       try {
-        let response=await axios.get(`http://localhost:3000/view/${id}`)
+        let response=await axios.get(`http://localhost:3000/view/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
         setDetails({
             companyName: response.data.data.companyName || "",
   position: response.data.data.position || "",
@@ -359,8 +375,8 @@ const Edit = () => {
 <div className={style.popupoverlay}>
 
 <div className={style.popup}>
-
-<Addjob closePopup={() => setShowAddJob(false)} refreshJobs={fetchDetails} />
+{/* 
+<Addjob closePopup={() => setShowAddJob(false)} refreshJobs={fetchDetails} /> */}
 
 </div>
 

@@ -2,6 +2,7 @@ const express=require("express")
 const connectDB=require("./db")
 let routes=require("./routes")
 let cors=require("cors")
+const config = require("dotenv").config();
 
 
 connectDB()
