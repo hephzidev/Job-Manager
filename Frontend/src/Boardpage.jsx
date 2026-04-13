@@ -17,6 +17,8 @@ const Webpage = () => {
   const [searchText, setSearchText] = useState("");
   const [filterType, setFilterType] = useState("companyName");
   const [userName, setUserName] = useState("User");
+  const [likeCount,setLikeCount] = useState(0)
+  
 
   const { id } = useParams();
   const navigate=useNavigate()
@@ -34,7 +36,11 @@ const Webpage = () => {
 
         const jobsWithLike = response.data.data.map((job) => ({...job, liked: job.likedBy?.some((id) => id && String(id) === String(userId)) || false }));
         setJobs(jobsWithLike);
-          console.log("UPDATED JOBS:", jobsWithLike);
+
+        const totalLikes=jobsWithLike.filter(job=>job.liked).length;
+        setLikeCount(totalLikes)
+        
+      console.log("UPDATED JOBS:", jobsWithLike);
       console.log(response.data.data);
       console.log("TOKEN IN BOARD:", token);
       console.log("USER ID:", userId);
@@ -85,6 +91,7 @@ const Webpage = () => {
      console.log("Sending:", { userId, jobId }); 
     try {
        const token = localStorage.getItem("token");
+
       //  console.log("TOKEN:", token);
 
       let liked=await axios.post("http://localhost:3000/like",{jobId},{headers:{Authorization:`Bearer ${token}`}})
@@ -118,9 +125,15 @@ const Webpage = () => {
               className={style.profileimage}
               alt="user avatar"
             />
+            
             <span className={style.badge}>
               Welcome, {userName || "User"} 👋
             </span>
+          </div>
+
+          <div className={style.topHeart}>
+                <FaRegHeart className={style.topHeartIcon}/>
+                <span className={style.likeCount}>{likeCount}</span>
           </div>
 
           <div class="btn-group">
@@ -208,7 +221,8 @@ const Webpage = () => {
                     {""}
                     <a
                       className={style.link}
-                      href={`http://www.google.com/maps/search/${job.location}`}
+                      href={`http://www.google.com/maps/search/${encodeURIComponent(job.location)}`}
+                      target="_blank"  rel="noopener noreferrer"
                     >
                       {job.location}
                     </a>
@@ -279,7 +293,8 @@ const Webpage = () => {
                     {""}
                     <a
                       className={style.link}
-                      href={`http://www.google.com/maps/search/${job.location}`}
+                      href={`http://www.google.com/maps/search/${encodeURIComponent(job.location)}`}
+                       target="_blank"  rel="noopener noreferrer"
                     >
                       {job.location}
                     </a>
@@ -351,7 +366,8 @@ const Webpage = () => {
                     {""}
                     <a
                       className={style.link}
-                      href={`http://www.google.com/maps/search/${job.location}`}
+                      href={`http://www.google.com/maps/search/${encodeURIComponent(job.location)}`}
+                       target="_blank"  rel="noopener noreferrer"
                     >
                       {job.location}
                     </a>
@@ -421,7 +437,8 @@ const Webpage = () => {
                     {""}
                     <a
                       className={style.link}
-                      href={`http://www.google.com/maps/search/${job.location}`}
+                      href={`http://www.google.com/maps/search/${encodeURIComponent(job.location)}`}
+                       target="_blank"  rel="noopener noreferrer"
                     >
                       {job.location}
                     </a>
@@ -490,7 +507,8 @@ const Webpage = () => {
                     {""}
                     <a
                       className={style.link}
-                      href={`http://www.google.com/maps/search/${job.location}`}
+                      href={`http://www.google.com/maps/search/${encodeURIComponent(job.location)}`}
+                       target="_blank"  rel="noopener noreferrer"
                     >
                       {job.location}
                     </a>
@@ -602,6 +620,7 @@ const Webpage = () => {
                 <a
                   className={style.link + " " + style.wordBreak}
                   href={`http://www.google.com/maps/search/${viewJob.location}`}
+                  target="_blank"  rel="noopener noreferrer"
                 >
                   {viewJob.location}
                 </a>

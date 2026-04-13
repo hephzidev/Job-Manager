@@ -49,6 +49,32 @@ cursor:pointer;
   
 }
 
+.topHeart{
+  position: relative;
+  display: inline-block;
+  margin-right: 20px;
+}
+.topHeartIcon{
+  font-size: 24px;
+  color: #000;
+}
+
+.likeCount{
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: red;
+  color: white;
+  min-width: 18px;
+  font-size: 11px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+
 
 
 /* //board======= */

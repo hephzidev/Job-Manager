@@ -14,7 +14,7 @@ const Login = () => {
       type:""
     })
 
-  
+    
 
     const navigate=useNavigate()
     console.log(details);

@@ -44,7 +44,11 @@ const createAccount = async (req, res) => {
 
 const loginAccount = async (req, res) => {
   const { userEmail, userPassword } = req.body;
+   console.log("STEP 1");
+
   try {
+     console.log("STEP 1");
+
     if (!userEmail || !userPassword) {
       return res.status(400).json({
         message: "Email and password are required",
@@ -53,18 +57,24 @@ const loginAccount = async (req, res) => {
     const user = await userSchema.findOne({
       userEmail,
     });
+    console.log("STEP 2", user);
     if (!user) {
       return res.status(401).json({
         message: "Invalid email",
       });
     }
     const isMatch = await bcrypt.compare(userPassword, user.userPassword);
+     console.log("STEP 3", isMatch);
     if (!isMatch) {
       return res.status(401).json({
         message: "Invalid password",
       });
     }
+     console.log("STEP 4 SECRET:", process.env.ACCESS_TOKEN_SECRET);
+
+
     const accesstoken = generateAccessToken({ userId: user._id });
+    console.log("STEP 5 TOKEN CREATED");  
     const refreshtoken = generateRefreshToken({userId: user._id});
 
     user.refreshtoken = refreshtoken;
@@ -80,10 +90,11 @@ const loginAccount = async (req, res) => {
 
     
   } catch (error) {
-    console.error("Login error:", error);
+       console.log("❌ ERROR OCCURRED")
 
     return res.status(500).json({
       message: "Internal Server Error",
+      error: error.message
     });
   }
 };
